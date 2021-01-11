@@ -1,0 +1,13 @@
+origine [Id, libelle,]
+
+plat [Id, libelle, prix, origine, végétarien, types]
+
+panier [plat, quantité, client]
+
+client [Id, ]
+
+prix [prymary]
+
+ingrédient [primary]
+
+dessert [prymary]

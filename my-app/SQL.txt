@@ -1,0 +1,43 @@
+SELECT AVG(Age) as Age_moyen FROM Personne LEFT JOIN Langue ON Personne.Id_langue = Langue.Id
+SELECT AVG(Age) as Age_moyen FROM Personne LEFT JOIN Langue ON Personne.Id_langue = Langue.Id GROUP BY Id_langue
+SELECT AVG(Age) as Age_moyen FROM Personne WHERE Nom like '%DU%'
+DELETE FROM Personne WHERE Nom like 'R%' and prenom like '%n'
+UPDATE AVG(Age) as Age_moyen FROM Personne WHERE Id_langue like '%g%'
+
+SELECT N_commande SUM(quantité) FROM DBN_Details_commandes GROUP BY N_commande
+
+SELECT date-commande, Nom-du-produit FROM dba-commande JOIN dba_detail_commande ON dba_commande = DBA_Details_commande.N_commande
+
+SELECT COUNT * societé FROM DBA_Commandes JOIN DBA_Clients on code_client = client-codeclient WHERE year GROUP BY société HAVING COUNT * 
+
+SELECT SUBSTR(Nom,1,3) as Nom_tronc, prenom FROM Personne WHERE Age < 50
+UNION
+SELECT Nom as Nom_tronc, prenom FROM Personne WHERE Age > 50;
+SELECT SUBSTR(Nom,1,CHAR_LENGTH(nom) - 3) as Nom_tronc, prenom FROM Personne WHERE Age > 50
+UNION
+SELECT Nom as Nom_tronc, prenom FROM Personne WHERE Age < 50;
+
+SELECT personne FROM langue WHERE Id NOT IN (
+    SELECT Id langue FROM personne WHERE Nom='Dupont')
+
+SELECT SUM(age) as Somme_Age, Libelle as Langue
+FROM personne
+INNER JOIN Langue ON Personne.Id_langue = Langue.Id GROUP
+GROUP BY Id_langue
+HAVING Id_langue NOT IN (
+    SELECT Id_langue FROM Personne WHERE Age BETWEEN 25 AND 27
+)
+
+CREATE FUNCTION ajoute(nb1 INT,nb2 INT)
+RETURNS INT DETERMINISTIC
+RETURN nb1+nb2;
+SELECT Nom,Age,
+CASE
+WHEN ajoute(Age,Length(Nom))<60THEN'actif'
+WHEN ajoute(Age,Length(Nom))<60THEN'retraité'
+END
+AS Statut
+
+SELECT nom,prenom FROM personne WHERE id_sup IN
+(SELECT personne.id FROM personne INNER JOIN Langue ON personne.Id_langue=langue.Id
+ WHERE libelle='Aglais');

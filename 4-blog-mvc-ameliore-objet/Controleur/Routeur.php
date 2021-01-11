@@ -1,0 +1,78 @@
+<?php
+
+require_once 'Controleur/ControleurAccueil.php';
+require_once 'Controleur/ControleurBillet.php';
+require_once 'Vue/Vue.php';
+class Routeur {
+
+    private $ctrlAccueil;
+    private $ctrlBillet;
+
+    public function __construct() {
+        $this->ctrlAccueil = new ControleurAccueil();
+        $this->ctrlBillet = new ControleurBillet();
+    }
+
+    // Route une requête entrante : exécution l'action associée
+    public function routerRequete() {
+        try {
+            if (isset($_GET['action'])) {
+                if ($_GET['action'] == 'billet') {
+                    $idBillet = intval($this->getParametre($_GET, 'id'));
+                    if ($idBillet != 0) {
+                        $this->ctrlBillet->billet($idBillet);
+                    }
+                    else
+                        throw new Exception("Identifiant de billet non valide");
+                }
+                else if ($_GET['action'] == 'commenter') {
+                    $auteur = $this->getParametre($_POST, 'auteur');
+                    $contenu = $this->getParametre($_POST, 'contenu');
+                    $idBillet = $this->getParametre($_POST, 'id');
+                    $this->ctrlBillet->commenter($auteur, $contenu, $idBillet);
+                }
+                else if ($_GET['action'] == 'billeter') {
+                    $auteur = $this->getParametre($_POST, 'titre');
+                    $contenu = $this->getParametre($_POST, 'contenu');
+                    $this->ctrlBillet->billeter($auteur, $contenu);
+                    $this->ctrlAccueil->accueil();
+                }
+                else if ($_GET['action'] == 'debilleter') {
+                    $id = $this->getParametre($_GET, 'id');
+                    $this->ctrlBillet->debilleter($id);
+                    $this->ctrlAccueil->accueil();
+                }
+                else if ($_GET['action'] == 'decomm') {
+                    $id = $this->getParametre($_GET, 'id');
+                    $id2 = $this->getParametre($_GET, 'id2');
+                    $this->ctrlBillet->decommenter($id);
+                    $this->ctrlBillet->billet($id2);
+                }
+                else
+                    throw new Exception("Action non valide");
+            }
+            else {  // aucune action définie : affichage de l'accueil
+                $this->ctrlAccueil->accueil();
+            }
+        }//erreur d'affichage
+        catch (Exception $e) {
+            $this->erreur($e->getMessage());
+        }
+    }
+
+    // Affiche une erreur
+    private function erreur($msgErreur) {
+        $vue = new Vue("Erreur");
+        $vue->generer(array('msgErreur' => $msgErreur));
+    }
+
+    // Recherche un paramètre dans un tableau
+    private function getParametre($tableau, $nom) {
+        if (isset($tableau[$nom])) {
+            return $tableau[$nom];
+        }
+        else
+            throw new Exception("Paramètre '$nom' absent");
+    }
+
+}
