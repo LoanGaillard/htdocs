@@ -1,0 +1,15 @@
+{
+    "name": "lgaillard/4-todo-objet-mvc",
+    "authors": [
+        {
+            "name": "LoanGaillard",
+            "email": "lgaillard@edenschool.fr"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Todo\\": "src/"
+        }
+    }
+}

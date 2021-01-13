@@ -9,7 +9,7 @@
 <body>
 <?php
     //permet de ce connecter à la base de donnée
-    $base = new PDO('mysql:host=127.0.0.1;dbname=eval', 'root', 'root');
+    $base = new PDO('mysql:host=127.0.0.1;dbname=eval', 'root', '');
     $base->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     $sql = "INSERT INTO stagiaire (id, nom, prenom,) VALUES (:id, :nom, :prenom,) ";
     $resultat = $base->prepare($sql);
