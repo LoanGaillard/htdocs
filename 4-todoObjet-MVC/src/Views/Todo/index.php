@@ -23,7 +23,11 @@ ob_start();
                             </div>
                             <div class="separateur"></div>
                             <div class="bottom">
-                            
+                            <?php
+                                foreach ($todo->task() as => $task) {
+                                    
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
